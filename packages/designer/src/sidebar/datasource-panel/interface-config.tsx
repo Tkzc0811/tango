@@ -1,8 +1,7 @@
-import React from 'react';
 import { observer, useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { Box } from 'coral-system';
+import React from 'react';
 import { VariableTree } from '../../components';
-import { useSandboxQuery } from '../../context';
 
 // 移除掉不必要的属性
 export function shapeServiceValues(val: any) {
@@ -12,8 +11,7 @@ export function shapeServiceValues(val: any) {
 }
 
 const DataSourceView = observer(() => {
-  const sandbox = useSandboxQuery();
-  const workspace = useWorkspace();
+∆  const workspace = useWorkspace();
   const { serviceVariables } = useWorkspaceData();
   const serviceModules = Object.keys(workspace.serviceModules).map((key) => ({
     label: key === 'index' ? '默认模块' : key,
@@ -24,7 +22,6 @@ const DataSourceView = observer(() => {
     <Box className="ServiceFunctionList" p="m">
       <VariableTree
         dataSource={serviceVariables}
-        appContext={(sandbox?.window as any)['tango']}
         serviceModules={serviceModules}
         onRemoveService={(variableKey) => {
           workspace.removeServiceFunction(variableKey);

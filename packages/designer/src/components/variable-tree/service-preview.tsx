@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
-import { Box } from 'coral-system';
-import { Button, Empty } from 'antd';
 import { PlayCircleOutlined } from '@ant-design/icons';
-import { InputCode, Panel, JsonView } from '@music163/tango-ui';
-import { isNil, logger, getValue } from '@music163/tango-helpers';
 import { code2value } from '@music163/tango-core';
+import { useSandboxQuery } from '@music163/tango-designer';
+import { getValue, isNil, logger } from '@music163/tango-helpers';
+import { InputCode, JsonView, Panel } from '@music163/tango-ui';
+import { Button, Empty } from 'antd';
+import { Box } from 'coral-system';
+import React, { useState } from 'react';
 
 export interface ServicePreviewProps {
   appContext?: any;
   functionKey?: string;
 }
 
-export function ServicePreview({ appContext, functionKey }: ServicePreviewProps) {
+export function ServicePreview({ functionKey }: ServicePreviewProps) {
   const [payload, setPayload] = useState({});
   const [result, setResult] = useState<any>();
   const [error, setError] = useState('');
+  const sandbox = useSandboxQuery();
+  const appContext = (sandbox.window as any)['tango'];
   return (
     <Box>
       <Panel title="请求参数" bodyProps={{ px: 'l' }}>
@@ -33,7 +36,7 @@ export function ServicePreview({ appContext, functionKey }: ServicePreviewProps)
           style={{ margin: '8px 0' }}
           disabled={!appContext}
           onClick={() => {
-            if (!appContext) {
+            if (!appContext || Object.keys(appContext).length === 0) {
               setError('执行上下文未准备好，请关闭面板重试');
               return;
             }

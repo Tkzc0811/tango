@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import {
+  CopyOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  FunctionOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import {
   IVariableTreeNode,
   filterTreeData,
@@ -7,18 +13,13 @@ import {
   noop,
   parseServiceVariablePath,
 } from '@music163/tango-helpers';
-import { css, Box, Text } from 'coral-system';
-import { Button, Popconfirm, Tooltip, Tree } from 'antd';
-import {
-  CopyOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-  FunctionOutlined,
-  PlusOutlined,
-} from '@ant-design/icons';
 import { CopyClipboard, Panel, Search } from '@music163/tango-ui';
-import { AddStoreForm, AddStoreVariableForm } from './add-store';
+import { Button, Popconfirm, Tooltip, Tree } from 'antd';
+import { Box, Text, css } from 'coral-system';
+import React, { useCallback, useMemo, useState } from 'react';
 import { AddServiceForm } from './add-service';
+import { AddStoreForm, AddStoreVariableForm } from './add-store';
+import { ServicePreview } from './service-preview';
 import {
   NodeCommonDetail,
   ValueDefine,
@@ -27,7 +28,6 @@ import {
   ValueDetailProps,
 } from './value-detail';
 import { ValuePreview } from './value-preview';
-import { ServicePreview } from './service-preview';
 
 const varTreeStyle = css`
   overflow: auto;
@@ -73,7 +73,6 @@ interface IVariableTreeRenderDetailState {
 export interface VariableTreeProps {
   defaultValueDetailMode?: ValueDetailProps['defaultMode'];
   dataSource: IVariableTreeNode[];
-  appContext?: object;
   serviceModules?: any[];
   getPreviewValue?: (node: IVariableTreeNode) => unknown;
   getServiceData?: (serviceKey: string) => object;
@@ -114,7 +113,6 @@ export function VariableTree(props: VariableTreeProps) {
   const {
     dataSource = [],
     serviceModules = [],
-    appContext = {},
     defaultValueDetailMode,
     onSelect = noop,
     onAddStoreVariable = noop,
@@ -371,11 +369,7 @@ export function VariableTree(props: VariableTreeProps) {
                   />
                 </Panel>
                 <Panel shape="solid" title="服务函数预览" mt="l">
-                  <ServicePreview
-                    key={activeNode.key}
-                    appContext={appContext}
-                    functionKey={activeNode.key}
-                  />
+                  <ServicePreview key={activeNode.key} functionKey={activeNode.key} />
                 </Panel>
               </>
             );
